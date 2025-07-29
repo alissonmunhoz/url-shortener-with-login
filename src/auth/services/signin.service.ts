@@ -12,10 +12,7 @@ export class SignInService {
   ) {}
 
   async execute(data: SignInDTO) {
-    console.log('Executing SignInService with data:', data);
     const user = await this.authRepository.findByEmail(data.email);
-
-    console.log('User found:', user);
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
