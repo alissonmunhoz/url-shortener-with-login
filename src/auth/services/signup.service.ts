@@ -2,6 +2,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IAuthRepository } from '../database/auth.repository';
 import * as brcrypt from 'bcrypt';
 import { SignUpDTO } from '../dtos/auth';
+import { Counter } from 'prom-client';
+
+export const userCreatedCounter = new Counter({
+  name: 'users_created_total',
+  help: 'Total number of  users created',
+});
 
 @Injectable()
 export class SignUpService {
@@ -22,6 +28,8 @@ export class SignUpService {
       ...data,
       password: hashedPassword,
     });
+
+    userCreatedCounter.inc();
     return user;
   }
 }

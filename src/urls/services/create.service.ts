@@ -1,6 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { IUrlRepository } from '../database/url.repository';
+import { Counter } from 'prom-client';
+
+export const urlsCreatedCounter = new Counter({
+  name: 'urls_created_total',
+  help: 'Total number of shortened URLs created',
+});
 
 @Injectable()
 export class CreateUrlService {
@@ -20,6 +26,8 @@ export class CreateUrlService {
       shortCode,
       userId,
     });
+
+    urlsCreatedCounter.inc();
 
     return {
       shortUrl: `${process.env.BASE_URI}/${newUrl.shortCode}`,
