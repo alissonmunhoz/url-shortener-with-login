@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IUrlRepository } from '../database/url.repository';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class findUrlsByUserId {
     const findAllUrls = await this.urlRepository.findAllByUser(userId);
 
     if (!findAllUrls || findAllUrls.length === 0) {
-      throw new Error('No URLs found for this user');
+      throw new NotFoundException('No URLs found for this user');
     }
 
     return findAllUrls;

@@ -21,7 +21,7 @@ export class CreateUrlService {
     originalUrl: string,
     userId?: string,
   ): Promise<{ shortUrl: string }> {
-    const shortCode = crypto.randomBytes(3).toString('base64url');
+    const shortCode = crypto.randomBytes(4).toString('base64url').slice(0, 6);
     console.log('Generated short code:', shortCode);
     const newUrl = await this.urlRepository.create({
       originalUrl,

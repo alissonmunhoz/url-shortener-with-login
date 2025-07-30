@@ -1,4 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { IAuthRepository } from '../database/auth.repository';
 import * as brcrypt from 'bcrypt';
 import { SignUpDTO } from '../dtos/auth';
@@ -19,7 +24,7 @@ export class SignUpService {
   async execute(data: SignUpDTO) {
     const existingUser = await this.authRepository.findByEmail(data.email);
     if (existingUser) {
-      throw new Error('User already exists');
+      throw new ConflictException('User already exists');
     }
 
     const hashedPassword = await brcrypt.hash(data.password, 10);
@@ -30,7 +35,7 @@ export class SignUpService {
     });
 
     if (!user) {
-      throw new Error('Error creating user');
+      throw new InternalServerErrorException('Error creating user');
     }
 
     userCreatedCounter.inc();
