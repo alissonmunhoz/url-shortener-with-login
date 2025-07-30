@@ -9,6 +9,12 @@ export class findUrlsByUserId {
   ) {}
 
   async execute(userId: string) {
-    return await this.urlRepository.findAllByUser(userId);
+    const findAllUrls = await this.urlRepository.findAllByUser(userId);
+
+    if (!findAllUrls || findAllUrls.length === 0) {
+      throw new Error('No URLs found for this user');
+    }
+
+    return findAllUrls;
   }
 }

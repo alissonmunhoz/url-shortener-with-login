@@ -16,6 +16,11 @@ export class DeleteService {
       throw new ForbiddenException();
     }
 
-    return this.urlRepository.softDelete(shortCode);
+    const deletedUrl = await this.urlRepository.softDelete(shortCode);
+    if (!deletedUrl) {
+      throw new ForbiddenException('Error deleting URL');
+    }
+
+    return deletedUrl;
   }
 }

@@ -29,6 +29,10 @@ export class SignUpService {
       password: hashedPassword,
     });
 
+    if (!user) {
+      throw new Error('Error creating user');
+    }
+
     userCreatedCounter.inc();
     return user;
   }

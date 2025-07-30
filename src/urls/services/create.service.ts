@@ -1,12 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { IUrlRepository } from '../database/url.repository';
-import { Counter } from 'prom-client';
+import { Counter, register } from 'prom-client';
 
-export const urlsCreatedCounter = new Counter({
-  name: 'urls_created_total',
-  help: 'Total number of shortened URLs created',
-});
+const urlsCreatedCounter: Counter =
+  (register.getSingleMetric('urls_created_total') as Counter) ||
+  new Counter({
+    name: 'urls_created_total',
+    help: 'Total number of shortened URLs created',
+  });
 
 @Injectable()
 export class CreateUrlService {
@@ -20,7 +22,7 @@ export class CreateUrlService {
     userId?: string,
   ): Promise<{ shortUrl: string }> {
     const shortCode = crypto.randomBytes(3).toString('base64url');
-
+    console.log('Generated short code:', shortCode);
     const newUrl = await this.urlRepository.create({
       originalUrl,
       shortCode,
