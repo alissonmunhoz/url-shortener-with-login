@@ -1,5 +1,5 @@
 
-# URL Shortener API with Monitoring
+# URL Shortener API with Login
 
 A URL shortening service built with **NestJS**, **PostgreSQL**, **Prisma**, and monitoring support via **Prometheus** and **Grafana**.
 
